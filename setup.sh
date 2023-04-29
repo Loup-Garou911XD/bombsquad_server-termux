@@ -3,7 +3,7 @@
 termux_home="/data/data/com.termux/files/home/"
 download_link_file=".latest_bombsquad_server_download_ln"
 log_file="/data/data/com.termux/files/home/bombsquad_setup.log"
-root_fs="/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/root"
+root_fs="/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/"
 echo "beginning">$log_file
 raw_get_latest_link="https://raw.githubusercontent.com/Loup-Garou911XD/bombsquad_server-termux/main/get_latest_link.py"
 
@@ -31,8 +31,8 @@ get_latest_server_build(){
 curl -so get_latest_link.py $raw_get_latest_link
 proot-distro login ubuntu --termux-home -- python3.10 get_latest_link.py
 
-curl -s $(cat $download_link_file) -o $root_fs/bs_server.tar.gz &&
-tar -xzf $root_fs/bs_server.tar.gz -C $root_fs
+curl -s $(cat $download_link_file) -o $root_fs/root/bs_server.tar.gz &&
+tar -xzf $root_fs/root/bs_server.tar.gz -C $root_fs/root/
 }
 
 printf "${green}Installing proot-distro${clear}\n"
@@ -53,11 +53,11 @@ printf "${green}Updating ubuntu CA certificates${clear}\n"
 update_ssl_certificate
 
 #writing a valid value to /etc/machine-id
-printf "${green}Making /etc/machine-id${clear}\n"
-proot-distro login ubuntu -- echo "10666fee-0108-3264-1000-beef10de1667">/etc/machine-id
+printf "${green}Making /etc/machine-id in ubuntu${clear}\n"
+echo "10666fee-0108-3264-1000-beef10de1667">$root_fs/etc/machine-id
 
 #setup to access storage in proot-distro
-printf "${blue}This will give termux permission to access your storage and allow you to access it inside proot-distro.\nDo you want to Setup storage${clear}(y/n):"
+printf "${blue}Setting up storage will give termux permission to access your storage and allow you to access it inside proot-distro.\nDo you want to Setup storage${clear}(y/n):"-
 read setup_storage_yn
 case $setup_storage_yn in
     y|Y|yes|Yes|YES) setup_storage;
@@ -90,6 +90,6 @@ case $get_latest_server_yn in
 		     get_latest_server_build;
 esac
 
-
-printf "${cyan}Finished! Restart termux to login into ubuntu${clear}\n"
+printf "${cyan}Finished!${clear}\n"
+proot-distro login ubuntu
 
