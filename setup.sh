@@ -16,6 +16,11 @@ blue="\033[34m"
 purple="\033[35m"
 cyan="\033[36m"
 
+update_ssl_certificate(){
+$(proot-distro login ubuntu -- apt-get install -y ca-certificates &>/dev/null)
+$(proot-distro login ubuntu -- update-ca-certificates &>/dev/null)
+}
+
 setup_storage(){
 yes|output=$(termux-setup-storage 2>>/dev/null) && 
 output=$(ln -s /storage/emulated/0 /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/root/storage 2>>/dev/null)
@@ -32,7 +37,7 @@ tar -xzf $root_fs/bs_server.tar.gz -C $root_fs
 
 printf "${green}Installing proot-distro${clear}\n"
 $(apt-get update &>>$log_file)
-$(apt-get upgrade -y &>>$log_file)
+yes|$(apt-get upgrade -y &>>$log_file)
 $(apt-get install proot-distro -y &>>$log_file)
 
 #installing proot-distro ubuntu
@@ -42,6 +47,9 @@ $(proot-distro install ubuntu &>$log_file)
 #updating ubuntu
 printf "${green}Updating ubuntu${clear}\n"
 output=$(proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y)
+
+printf "${green}Updating ubuntu CA certificates${clear}"
+update_ssl_certificate
 
 #setup to access storage in proot-distro
 printf "${blue}This will give termux permission to access your storage and allow you to access it inside proot-distro.\nDo you want to Setup storage${clear}(y/n):"
