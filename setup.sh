@@ -1,6 +1,9 @@
 #! /bin/bash
 
+termux_home="/data/data/com.termux/files/home/"
+download_link_file=".latest_bombsquad_server_download_ln"
 log_file="/data/data/com.termux/files/home/bombsquad_setup.log"
+root_fs="/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/root"
 echo "beginning">$log_file
 raw_get_latest_link="https://raw.githubusercontent.com/Loup-Garou911XD/bombsquad_server-termux/main/get_latest_link.py"
 
@@ -20,25 +23,25 @@ output=$(ln -s /storage/emulated/0 /data/data/com.termux/files/usr/var/lib/proot
 
 #downloads and extracts the latest bombsquad server build for arm64
 get_latest_server_build(){
-curl -so get_latest_link.py $raw_get_latest_link
+#curl -so get_latest_link.py $raw_get_latest_link
+proot-distro login ubuntu --termux-home -- python3.10 get_latest_link.py
 
-latest_server_build_link=$(proot-distro login ubuntu --termux-home -- python3.10 get_latest_link.py)
-proot-distro login ubuntu -- curl -s $latest_server_build_link -o bs_server.tar.gz
-proot-distro login ubuntu -- tar -xzf bs_server.tar.gz
+curl -s $(cat $download_link_file) -o $root_fs/bs_server.tar.gz &&
+tar -xzf $root_fs/bs_server.tar.gz -C $root_fs
 }
 
 printf "${green}Installing proot-distro${clear}\n"
-$(apt-get update &>>$log_file)
-$(apt-get upgrade -y &>>$log_file)
-$(apt-get install proot-distro -y &>>$log_file)
+#$(apt-get update &>>$log_file)
+#$(apt-get upgrade -y &>>$log_file)
+#$(apt-get install proot-distro -y &>>$log_file)
 
 #installing proot-distro ubuntu
 printf "${green}Installing ubuntu in proot-distro${clear}\n"
-$(proot-distro install ubuntu &>$log_file)
+#$(proot-distro install ubuntu &>$log_file)
 
 #updating ubuntu
 printf "${green}Updating ubuntu${clear}\n"
-output=$(proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y)
+#output=$(proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y)
 
 #setup to access storage in proot-distro
 printf "${blue}This will give termux permission to access your storage and allow you to access it inside proot-distro.\nDo you want to Setup storage${clear}(y/n):"

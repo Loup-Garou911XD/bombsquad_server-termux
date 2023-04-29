@@ -1,7 +1,6 @@
 import urllib.request
 
 page = urllib.request.urlopen("https://ballistica.net/downloads")
-
 page=page.read().decode("utf-8").split("<a")
 a_tags=[]
 links=[]
@@ -20,4 +19,7 @@ for i in links:
 
 for i in linux_arm_links:
     if "server" in i.lower():
-        print(i[1:-1]) #removing double-quotes fromstart and end of string
+        download_link=i[1:-1] #removing double-quotes fromstart and end of string
+
+with open(".latest_bombsquad_server_download_ln","w") as file:
+	file.write(download_link)
