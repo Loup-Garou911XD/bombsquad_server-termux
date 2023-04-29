@@ -7,11 +7,11 @@ a_tags=[]
 links=[]
 
 for i in page:
-    a_tags.append(i.split("g>")[0])
+    a_tags.append(i.split(">")[0])
 
 for i in a_tags:
     if i.strip().startswith("href="):
-        links.append(i.strip().split(">")[0][5:])
+        links.append(i.strip()[5:])
 
 linux_arm_links=[]
 for i in links:
