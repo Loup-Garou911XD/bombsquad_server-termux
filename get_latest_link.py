@@ -20,4 +20,4 @@ for i in links:
 
 for i in linux_arm_links:
     if "server" in i.lower():
-        print(i)
+        print(i[1:-1]) #removing double-quotes fromstart and end of string
