@@ -48,8 +48,13 @@ $(proot-distro install ubuntu &>$log_file)
 printf "${green}Updating ubuntu${clear}\n"
 output=$(proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y)
 
-printf "${green}Updating ubuntu CA certificates${clear}"
+#updating CA certificates
+printf "${green}Updating ubuntu CA certificates${clear}\n"
 update_ssl_certificate
+
+#writing a valid value to /etc/machine-id
+printf "${green}Making /etc/machine-id${clear}\n"
+proot-distro login ubuntu -- echo "10666fee-0108-3264-1000-beef10de1667">/etc/machine-id
 
 #setup to access storage in proot-distro
 printf "${blue}This will give termux permission to access your storage and allow you to access it inside proot-distro.\nDo you want to Setup storage${clear}(y/n):"
