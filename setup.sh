@@ -15,15 +15,13 @@ proot-distro login ubuntu -- curl -s $latest_server_build_link -o bs_server.tar.
 proot-distro login ubuntu -- tar -xzf bs_server.tar.gz
 }
 
-#pkg update &&
-#pkg upgrade -y &&
-#pkg install proot-distro -y &&
+$(apt-get update 1>/dev/null)
+$(apt-get upgrade -y 1>/dev/null)
+$(apt-get install proot-distro -y 1>/dev/null)
 
 #setup to access storage in proot-distro
-read -p "
-This will give termux permission to access your storage and allow you to access it inside proot-distro.
-
-Do you want to Setup storage?(y/n):" setup_storage_yn
+read -p "This will give termux permission to access your storage and allow you to access it inside proot-distro.
+Do you want to Setup storage(y/n):" setup_storage_yn
 case $setup_storage_yn in
     y|Y|yes|Yes|YES) setup_storage;
 esac
@@ -52,7 +50,7 @@ fi
 output=$(proot-distro login ubuntu 2>/dev/null -- apt-get update && apt-get upgrade -y)
 
 #install python3.10?
-read -p "Install python3.10 ?(y/n):" install_python_yn
+read -p "Install python3.10(y/n):" install_python_yn
 case $install_python_yn in
     y|Y|yes|Yes|YES) $(proot-distro login ubuntu -- apt-get install python3.10-dev -y 1>/dev/null);
 esac
