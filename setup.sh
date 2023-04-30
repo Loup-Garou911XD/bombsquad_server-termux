@@ -1,6 +1,7 @@
 #! /bin/bash
 
 termux_home="/data/data/com.termux/files/home/"
+termux_bashrc="/data/data/com.termux/files/usr/etc/bash.bashrc"
 download_link_file=".latest_bombsquad_server_download_ln"
 log_file="/data/data/com.termux/files/home/bombsquad_setup.log"
 root_fs="/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/"
@@ -35,44 +36,44 @@ curl -s $(cat $download_link_file) -o $root_fs/root/bs_server.tar.gz &&
 tar -xzf $root_fs/root/bs_server.tar.gz -C $root_fs/root/
 }
 
+printf "${green}Updating Termux packages${clear}\n"
+#$(apt-get update &>>$log_file)
+#yes|$(apt-get upgrade -y &>>$log_file)
 printf "${green}Installing proot-distro${clear}\n"
-$(apt-get update &>>$log_file)
-yes|$(apt-get upgrade -y &>>$log_file)
-$(apt-get install proot-distro -y &>>$log_file)
+#$(apt-get install proot-distro -y &>>$log_file)
 
 #installing proot-distro ubuntu
 printf "${green}Installing ubuntu in proot-distro${clear}\n"
-$(proot-distro install ubuntu &>$log_file)
+#$(proot-distro install ubuntu &>$log_file)
 
 #updating ubuntu
-printf "${green}Updating ubuntu${clear}\n"
+printf "${green}Updating ubuntu packages${clear}\n"
 output=$(proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y)
 
 #updating CA certificates
 printf "${green}Updating ubuntu CA certificates${clear}\n"
-update_ssl_certificate
+#update_ssl_certificate
 
 #writing a valid value to /etc/machine-id
 printf "${green}Making /etc/machine-id in ubuntu${clear}\n"
 echo "10666fee-0108-3264-1000-beef10de1667">$root_fs/etc/machine-id
 
+#adding ubuntu login cmd to bash.bashrc
+printf "${green}Adding login command to termux bashrc\n"
+login_cmd="proot-distro login ubuntu"
+if grep -Fxq "$login_cmd" $termux_bashrc
+then
+    true
+else
+    printf "clear\n$login_cmd">>$bashrc
+fi
+
 #setup to access storage in proot-distro
-printf "${blue}Setting up storage will give termux permission to access your storage and allow you to access it inside proot-distro.\nDo you want to Setup storage${clear}(y/n):"-
+printf "${blue}Setting up storage will give termux permission to access your storage and allow you to access it inside proot-distro.\nDo you want to Setup storage${clear}(y/n):"
 read setup_storage_yn
 case $setup_storage_yn in
     y|Y|yes|Yes|YES) setup_storage;
 esac
-
-#adding ubuntu login cmd to bash.bashrc 
-printf "${green}Adding login command to termux bashrc${clear}\n"
-login_cmd="proot-distro login ubuntu"
-bashrc="/data/data/com.termux/files/usr/etc/bash.bashrc"
-if grep -Fxq "$login_cmd" $bashrc
-then
-    true
-else
-    echo $login_cmd>>$bashrc
-fi
 
 #install python3.10?
 printf "${blue}Install python3.10${clear}(y/n):" 
