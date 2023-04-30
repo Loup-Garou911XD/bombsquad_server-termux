@@ -3,10 +3,10 @@
 termux_home="/data/data/com.termux/files/home/"
 termux_bashrc="/data/data/com.termux/files/usr/etc/bash.bashrc"
 download_link_file=".latest_bombsquad_server_download_ln"
-log_file="/data/data/com.termux/files/home/bombsquad_setup.log"
 root_fs="/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/"
-echo "beginning">$log_file
 raw_get_latest_link="https://raw.githubusercontent.com/Loup-Garou911XD/bombsquad_server-termux/main/get_latest_link.py"
+log_file="/data/data/com.termux/files/home/bombsquad_setup.log"
+echo "beginning">$log_file
 
 #colors
 clear="\033[0m"
@@ -37,14 +37,14 @@ tar -xzf $root_fs/root/bs_server.tar.gz -C $root_fs/root/
 }
 
 printf "${green}Updating Termux packages${clear}\n"
-#$(apt-get update &>>$log_file)
-#yes|$(apt-get upgrade -y &>>$log_file)
+$(apt-get update &>>$log_file)
+yes|$(apt-get upgrade -y &>>$log_file)
 printf "${green}Installing proot-distro${clear}\n"
-#$(apt-get install proot-distro -y &>>$log_file)
+$(apt-get install proot-distro -y &>>$log_file)
 
 #installing proot-distro ubuntu
 printf "${green}Installing ubuntu in proot-distro${clear}\n"
-#$(proot-distro install ubuntu &>$log_file)
+$(proot-distro install ubuntu &>$log_file)
 
 #updating ubuntu
 printf "${green}Updating ubuntu packages${clear}\n"
@@ -52,7 +52,7 @@ output=$(proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upg
 
 #updating CA certificates
 printf "${green}Updating ubuntu CA certificates${clear}\n"
-#update_ssl_certificate
+update_ssl_certificate #this is a function,not a command
 
 #writing a valid value to /etc/machine-id
 printf "${green}Making /etc/machine-id in ubuntu${clear}\n"
