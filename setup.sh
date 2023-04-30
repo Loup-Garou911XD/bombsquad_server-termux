@@ -65,7 +65,7 @@ if grep -Fxq "$login_cmd" $termux_bashrc
 then
     true
 else
-    printf "clear\n$login_cmd">>$bashrc
+    printf "clear\n$login_cmd">>$termux_bashrc
 fi
 
 #setup to access storage in proot-distro
