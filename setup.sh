@@ -72,23 +72,32 @@ fi
 printf "${blue}Setting up storage will give termux permission to access your storage and allow you to access it inside proot-distro.\nDo you want to Setup storage${clear}(y/n):"
 read setup_storage_yn
 case $setup_storage_yn in
-    y|Y|yes|Yes|YES) setup_storage;
+    y|Y|yes|Yes|YES)
+	setup_storage ;;
+    * )
+	printf "${yellow}Skipping${clear}\n";
 esac
 
 #install python3.10?
 printf "${blue}Install python3.10${clear}(y/n):" 
 read install_python_yn
 case $install_python_yn in
-    y|Y|yes|Yes|YES) printf "${green}Installing python3.10${clear}\n"; 
-		     $(proot-distro login ubuntu -- apt-get install python3.10-dev -y &>>$log_file);
+    y|Y|yes|Yes|YES) 
+	printf "${green}Installing python3.10${clear}\n" ; 
+	$(proot-distro login ubuntu -- apt-get install python3.10-dev -y &>>$log_file) ;;
+    * )
+	printf "${yellow}Skipping${clear}\n";
 esac
 
 #download latest server?
 printf "${blue}Get latest bombsquad server${clear}(y/n):" 
 read get_latest_server_yn
 case $get_latest_server_yn in
-    y|Y|yes|Yes|YES) printf "${green}Downloading bombsquad server${clear}\n" ;
-		     get_latest_server_build;
+    y|Y|yes|Yes|YES) 
+	printf "${green}Downloading bombsquad server${clear}\n" ;
+        get_latest_server_build ;;
+    * )
+	printf "${yellow}Skipping${clear}\n";
 esac
 
 printf "${cyan}Finished!${clear}\n"
