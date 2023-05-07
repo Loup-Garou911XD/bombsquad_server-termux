@@ -73,37 +73,37 @@ update_ubuntu(){
 
 
 #updating termux
-printf "${red}+-+-Updating Termux packages${clear}\n"
+printf "${red}+-+-Updating Termux packages${clear}\n">>$log_file
 printf "${green}Updating Termux packages${clear}\n"
 with_animation "update_termux"
 
 #installing proot-distro
-printf "${red}+-+-Installing proot-distro${clear}\n"
+printf "${red}+-+-Installing proot-distro${clear}\n">>$log_file
 printf "${green}Installing proot-distro${clear}\n"
 with_animation "\$(apt-get install proot-distro -y &>>$log_file)"
 
 #installing proot-distro ubuntu
-printf "${red}+-+-Installing proot-distro Ubuntu${clear}\n"
+printf "${red}+-+-Installing proot-distro Ubuntu${clear}\n">>$log_file
 printf "${green}Installing proot-distro Ubuntu${clear}\n"
 with_animation "\$(proot-distro install ubuntu &>>$log_file)"
 
 #updating ubuntu
-printf "${red}+-+-Updating ubuntu packages${clear}\n"
+printf "${red}+-+-Updating ubuntu packages${clear}\n">>$log_file
 printf "${green}Updating ubuntu packages${clear}\n"
 with_animation "update_ubuntu"
 
 #updating CA certificates
-printf "${red}+-+-Updating ubuntu CA certificates${clear}\n"
+printf "${red}+-+-Updating ubuntu CA certificates${clear}\n">>$log_file
 printf "${green}Updating ubuntu CA certificates${clear}\n"
 with_animation "update_ssl_certificate" #this is a function,not a command
 
 #writing a valid value to /etc/machine-id
-printf "${red}+-+-Making /etc/machine-id in ubuntu${clear}\n"
+printf "${red}+-+-Making /etc/machine-id in ubuntu${clear}\n">>$log_file
 printf "${green}Making /etc/machine-id in ubuntu${clear}\n"
 echo "10666fee-0108-3264-1000-beef10de1667">$root_fs/etc/machine-id
 
 #adding ubuntu login cmd to bash.bashrc
-printf "${red}+-+-Adding login commands to termux bashrc at ~/../usr/etc/bash.bashrc${clear}\n"
+printf "${red}+-+-Adding login commands to termux bashrc at ~/../usr/etc/bash.bashrc${clear}\n">>$log_file
 printf "${green}Adding login command to termux bashrc\n"
 login_cmd="proot-distro login ubuntu"
 if grep -Fxq "$login_cmd" $termux_bashrc
@@ -114,7 +114,7 @@ else
 fi
 
 #setup to access storage in proot-distro
-printf "${red}+-+-Setup up storage?${clear}\n"
+printf "${red}+-+-Setup up storage?${clear}\n">>$log_file
 printf "${blue}Setting up storage will give termux permission to access your storage and allow you to access it inside proot-distro.\nDo you want to Setup storage${clear}(y/n):"
 read setup_storage_yn
 case $setup_storage_yn in
@@ -125,7 +125,7 @@ case $setup_storage_yn in
 esac
 
 #install python3.10?
-printf "${red}+-+-Install python3.10?${clear}\n"
+printf "${red}+-+-Install python3.10?${clear}\n">>$log_file
 printf "${blue}Install python3.10${clear}(y/n):" 
 read install_python_yn
 case $install_python_yn in
@@ -137,7 +137,7 @@ case $install_python_yn in
 esac
 
 #download latest server?
-printf "${red}+-+-Get latest bs version?${clear}\n"
+printf "${red}+-+-Get latest bs version?${clear}\n">>$log_file
 printf "${blue}Get latest bombsquad server${clear}(y/n):" 
 read get_latest_server_yn
 case $get_latest_server_yn in
