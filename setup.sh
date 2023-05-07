@@ -17,42 +17,80 @@ blue="\033[34m"
 purple="\033[35m"
 cyan="\033[36m"
 
-update_ssl_certificate(){
-$(proot-distro login ubuntu -- apt-get install -y ca-certificates &>/dev/null)
-$(proot-distro login ubuntu -- update-ca-certificates &>/dev/null)
+load_animation=( '•....' '.•...' '..•..' '...•.' '....•' '...•.' '..•..' '.•...' '•....' )
+
+animate(){
+    printf "${purple}"
+    while [ 1 ]
+    do
+        for i in "${load_animation[@]}"
+        do
+            echo -ne "$i\r"
+            sleep 0.2
+        done
+	done
+    printf "${clear}"
 }
 
-setup_storage(){
-yes|output=$(termux-setup-storage 2>>/dev/null) && 
-output=$(ln -s /storage/emulated/0 /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/root/storage 2>>/dev/null)
+with_animation(){
+    animate &
+    pid=$!
+    eval $1
+    kill $pid
 }
+
+
+update_ssl_certificate(){
+    $(proot-distro login ubuntu -- apt-get install -y ca-certificates &>>$log_file)
+    $(proot-distro login ubuntu -- update-ca-certificates &>>$log_file)
+}
+
+
+setup_storage(){
+    yes|output=$(termux-setup-storage 2>>$log_file) 
+    output=$(ln -s /storage/emulated/0 /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/root/storage 2>>$log_file)
+}
+
 
 #downloads and extracts the latest bombsquad server build for arm64
 get_latest_server_build(){
-curl -so get_latest_link.py $raw_get_latest_link
-proot-distro login ubuntu --termux-home -- python3.10 get_latest_link.py
-
-curl -s $(cat $download_link_file) -o $root_fs/root/bs_server.tar.gz &&
-tar -xzf $root_fs/root/bs_server.tar.gz -C $root_fs/root/
+    curl -so get_latest_link.py $raw_get_latest_link &&
+    proot-distro login ubuntu --termux-home -- python3.10 get_latest_link.py
+    curl -s $(cat $download_link_file) -o $root_fs/root/bs_server.tar.gz &&
+    tar -xzf $root_fs/root/bs_server.tar.gz -C $root_fs/root/
 }
 
+
+update_termux(){
+    $(apt-get update &>>$log_file)
+    yes|$(apt-get upgrade -y &>>$log_file)
+}
+
+
+update_ubuntu(){
+    output=$(proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y)
+}
+
+
+#updating termux
 printf "${green}Updating Termux packages${clear}\n"
-$(apt-get update &>>$log_file)
-yes|$(apt-get upgrade -y &>>$log_file)
+with_animation "update_termux"
+
+#installing proot-distro
 printf "${green}Installing proot-distro${clear}\n"
-$(apt-get install proot-distro -y &>>$log_file)
+with_animation "\$(apt-get install proot-distro -y &>>$log_file)"
 
 #installing proot-distro ubuntu
 printf "${green}Installing ubuntu in proot-distro${clear}\n"
-$(proot-distro install ubuntu &>$log_file)
+with_animation "\$(proot-distro install ubuntu &>>$log_file)"
 
 #updating ubuntu
 printf "${green}Updating ubuntu packages${clear}\n"
-output=$(proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y)
+with_animation "update_ubuntu"
 
 #updating CA certificates
 printf "${green}Updating ubuntu CA certificates${clear}\n"
-update_ssl_certificate #this is a function,not a command
+with_animation "update_ssl_certificate" #this is a function,not a command
 
 #writing a valid value to /etc/machine-id
 printf "${green}Making /etc/machine-id in ubuntu${clear}\n"
@@ -73,7 +111,7 @@ printf "${blue}Setting up storage will give termux permission to access your sto
 read setup_storage_yn
 case $setup_storage_yn in
     y|Y|yes|Yes|YES)
-	setup_storage ;;
+    with_animation "setup_storage" ;;
     * )
 	printf "${yellow}Skipping${clear}\n";
 esac
@@ -84,7 +122,7 @@ read install_python_yn
 case $install_python_yn in
     y|Y|yes|Yes|YES) 
 	printf "${green}Installing python3.10${clear}\n" ; 
-	$(proot-distro login ubuntu -- apt-get install python3.10-dev -y &>>$log_file) ;;
+	with_animation "\$(proot-distro login ubuntu -- apt-get install python3.10-dev -y &>>$log_file)" ;;
     * )
 	printf "${yellow}Skipping${clear}\n";
 esac
@@ -95,7 +133,7 @@ read get_latest_server_yn
 case $get_latest_server_yn in
     y|Y|yes|Yes|YES) 
 	printf "${green}Downloading bombsquad server${clear}\n" ;
-        get_latest_server_build ;;
+        with_animation "get_latest_server_build" ;;
     * )
 	printf "${yellow}Skipping${clear}\n";
 esac
