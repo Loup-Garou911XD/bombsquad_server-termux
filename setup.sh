@@ -59,7 +59,7 @@ setup_storage(){
 get_latest_server_build(){
     curl -so get_latest_link.py $raw_get_latest_link &&
     proot-distro login ubuntu --termux-home -- python3.10 get_latest_link.py
-    curl -s $(cat $download_link_file) -o $root_fs/root/bs_server.tar.gz &&
+    curl $(cat $download_link_file) -o $root_fs/root/bs_server.tar.gz &>>$log_file &&
     tar -xzf $root_fs/root/bs_server.tar.gz -C $root_fs/root/
 }
 
@@ -122,7 +122,7 @@ printf "${blue}Setting up storage will give termux permission to access your sto
 read setup_storage_yn
 case $setup_storage_yn in
     y|Y|yes|Yes|YES)
-    with_animation "setup_storage" ;;
+        with_animation "setup_storage" ;;
     * )
 	printf "${yellow}Skipping${clear}\n";
 esac
