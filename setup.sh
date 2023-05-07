@@ -18,14 +18,17 @@ purple="\033[35m"
 cyan="\033[36m"
 
 load_animation=( '•....' '.•...' '..•..' '...•.' '....•' '...•.' '..•..' '.•...' '•....' )
+load_animation2=( ' ↑↓' ' ↓↑' )
+load_animation3=( ' ↑' ' ↓')
+load_animation4=( '-----' '>----' '>>---' '>>>--' '>>>>-' '>>>>>' '>>>>-' '>>>--' '>>---' '>----' '-----' '----<' '---<<' '--<<<' '-<<<<' '<<<<<' '-<<<<' '--<<<' '---<<' '----<' )
 
 animate(){
     printf "${purple}"
     while [ 1 ]
     do
-        for i in "${load_animation[@]}"
+        for i in "${load_animation4[@]}"
         do
-            echo -ne "$i\r"
+            echo -ne "$i\033[K\r"
             sleep 0.2
         done
 	done
