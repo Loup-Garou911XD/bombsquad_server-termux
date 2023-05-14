@@ -77,7 +77,7 @@ update_ubuntu(){
 
 #getting and printing art
 echo ""
-echo $(curl -s $raw_art_link)
+curl -s $raw_art_link
 
 #updating termux
 printf "${red}+-+-Updating Termux packages${clear}\n">>$log_file
