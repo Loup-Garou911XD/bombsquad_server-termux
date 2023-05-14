@@ -76,6 +76,7 @@ update_ubuntu(){
 }
 
 #getting and printing art
+echo ""
 echo $(curl -s $raw_art_link)
 
 #updating termux
