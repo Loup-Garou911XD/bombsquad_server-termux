@@ -4,6 +4,7 @@ termux_home="/data/data/com.termux/files/home/"
 termux_bashrc="/data/data/com.termux/files/usr/etc/bash.bashrc"
 download_link_file=".latest_bombsquad_server_download_ln"
 root_fs="/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/"
+raw_art_link="https://raw.githubusercontent.com/Loup-Garou911XD/bombsquad_server-termux/main/ansi_art.txt"
 raw_get_latest_link="https://raw.githubusercontent.com/Loup-Garou911XD/bombsquad_server-termux/main/get_latest_link.py"
 log_file="/data/data/com.termux/files/home/bombsquad_setup.log"
 echo "beginning">$log_file
@@ -74,6 +75,8 @@ update_ubuntu(){
     output=$(proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y)
 }
 
+#getting and printing art
+echo $(curl -s $raw_art_link)
 
 #updating termux
 printf "${red}+-+-Updating Termux packages${clear}\n">>$log_file
@@ -121,7 +124,7 @@ printf "${red}+-+-Setup up storage?${clear}\n">>$log_file
 printf "${blue}Setting up storage will give termux permission to access your storage and allow you to access it inside proot-distro.\nDo you want to Setup storage${clear}(y/n):"
 read setup_storage_yn
 case $setup_storage_yn in
-    y|Y|yes|Yes|YES)
+    y|Y|yes|Yes|YES )
         with_animation "setup_storage" ;;
     * )
 	printf "${yellow}Skipping${clear}\n";
