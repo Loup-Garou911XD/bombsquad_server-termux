@@ -4,7 +4,7 @@ termux_home="/data/data/com.termux/files/home/"
 termux_bashrc="/data/data/com.termux/files/usr/etc/bash.bashrc"
 download_link_file=".latest_bombsquad_server_download_ln"
 root_fs="/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/"
-raw_art_link="https://raw.githubusercontent.com/Loup-Garou911XD/bombsquad_server-termux/main/ascii_art.txt"
+raw_art_link="https://raw.githubusercontent.com/Loup-Garou911XD/bombsquad_server-termux/main/ansi_art.txt"
 raw_get_latest_link="https://raw.githubusercontent.com/Loup-Garou911XD/bombsquad_server-termux/main/get_latest_link.py"
 log_file="/data/data/com.termux/files/home/bombsquad_setup.log"
 echo "beginning">$log_file
