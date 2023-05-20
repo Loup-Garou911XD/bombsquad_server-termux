@@ -25,7 +25,7 @@ load_animation4=(  ' >' ' >>' ' >>>' ' >>>>' ' >>>>>' ' >>>>' ' >>>' ' >>' ' >' 
 
 animate(){
     printf "${purple}"
-    while [ 1 ]
+    while true
     do
         for i in "${load_animation4[@]}"
         do
@@ -39,20 +39,20 @@ animate(){
 with_animation(){
     animate &
     pid=$!
-    eval $1
+    eval "$1"
     kill $pid
 }
 
 
 update_ssl_certificate(){
-    $(proot-distro login ubuntu -- apt-get install -y ca-certificates &>>$log_file)
-    $(proot-distro login ubuntu -- update-ca-certificates &>>$log_file)
+    proot-distro login ubuntu -- apt-get install -y ca-certificates &>>$log_file
+    proot-distro login ubuntu -- update-ca-certificates &>>$log_file
 }
 
 
 setup_storage(){
-    yes|output=$(termux-setup-storage 2>>$log_file) 
-    output=$(ln -s /storage/emulated/0 /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/root/storage 2>>$log_file)
+    yes|termux-setup-storage &>>$log_file
+    ln -s /storage/emulated/0 /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/root/storage &>>$log_file
 }
 
 
@@ -66,13 +66,13 @@ get_latest_server_build(){
 
 
 update_termux(){
-    $(apt-get update &>>$log_file)
-    yes|$(apt-get upgrade -y &>>$log_file)
+    apt-get update &>>$log_file
+    yes|apt-get upgrade -y &>>$log_file
 }
 
 
 update_ubuntu(){
-    output=$(proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y)
+    proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y  &>>$log_file
 }
 
 #getting and printing art
@@ -123,7 +123,7 @@ fi
 #setup to access storage in proot-distro
 printf "${red}+-+-Setup up storage?${clear}\n">>$log_file
 printf "${blue}Setting up storage will give termux permission to access your storage and allow you to access it inside proot-distro.\nDo you want to Setup storage${clear}(y/n):"
-read setup_storage_yn
+read -r setup_storage_yn
 case $setup_storage_yn in
     y|Y|yes|Yes|YES )
         with_animation "setup_storage" ;;
@@ -134,7 +134,7 @@ esac
 #install python3.10?
 printf "${red}+-+-Install python3.10?${clear}\n">>$log_file
 printf "${blue}Install python3.10${clear}(y/n):" 
-read install_python_yn
+read -r install_python_yn
 case $install_python_yn in
     y|Y|yes|Yes|YES) 
 	printf "${green}Installing python3.10${clear}\n" ; 
@@ -146,7 +146,7 @@ esac
 #download latest server?
 printf "${red}+-+-Get latest bs version?${clear}\n">>$log_file
 printf "${blue}Get latest bombsquad server${clear}(y/n):" 
-read get_latest_server_yn
+read -r get_latest_server_yn
 case $get_latest_server_yn in
     y|Y|yes|Yes|YES) 
 	printf "${green}Downloading bombsquad server${clear}\n" ;
