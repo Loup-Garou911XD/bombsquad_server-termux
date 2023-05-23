@@ -23,6 +23,11 @@ load_animation2=( ' ↑↓' ' ↓↑' )
 load_animation3=( ' ↑' ' ↓')
 load_animation4=(  ' >' ' >>' ' >>>' ' >>>>' ' >>>>>' ' >>>>' ' >>>' ' >>' ' >' '     <' '    <<' '   <<<' '  <<<<' ' <<<<<' '  <<<<' '   <<<' '    <<' '     <' )
 
+trap interrupt_handler SIGINT
+interrupt_handler(){
+	kill -KILL $$
+}
+
 animate(){
     printf "${purple}"
     while true
@@ -39,10 +44,9 @@ animate(){
 with_animation(){
     animate &
     pid=$!
-    eval "$1"
-    kill $pid
+    eval $1
+    kill $pid &>>$log_file
 }
-
 
 update_ssl_certificate(){
     proot-distro login ubuntu -- apt-get install -y ca-certificates &>>$log_file
