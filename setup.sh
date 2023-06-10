@@ -63,7 +63,7 @@ setup_storage(){
 #downloads and extracts the latest bombsquad server build for arm64
 get_latest_server_build(){
     curl -so get_latest_link.py $raw_get_latest_link &&
-    proot-distro login ubuntu --termux-home -- python3.10 get_latest_link.py
+    proot-distro login ubuntu --termux-home -- python3.11 get_latest_link.py
     curl $(cat $download_link_file) -o $root_fs/root/bs_server.tar.gz &>>$log_file &&
     tar -xzf $root_fs/root/bs_server.tar.gz -C $root_fs/root/
 }
@@ -135,14 +135,14 @@ case $setup_storage_yn in
 	printf "${yellow}Skipping${clear}\n";
 esac
 
-#install python3.10?
-printf "${red}+-+-Install python3.10?${clear}\n">>$log_file
-printf "${blue}Install python3.10${clear}(y/n):" 
+#install python3.11?
+printf "${red}+-+-Install python3.11?${clear}\n">>$log_file
+printf "${blue}Install python3.11${clear}(y/n):" 
 read -r install_python_yn
 case $install_python_yn in
     y|Y|yes|Yes|YES) 
-	printf "${green}Installing python3.10${clear}\n" ; 
-	with_animation "\$(proot-distro login ubuntu -- apt-get install python3.10-dev -y &>>$log_file)" ;;
+	printf "${green}Installing python3.11${clear}\n" ; 
+	with_animation "\$(proot-distro login ubuntu -- apt-get install python3.11-dev -y &>>$log_file)" ;;
     * )
 	printf "${yellow}Skipping${clear}\n";
 esac
