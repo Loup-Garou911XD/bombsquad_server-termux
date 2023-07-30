@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 termux_home="/data/data/com.termux/files/home/"
 termux_bashrc="/data/data/com.termux/files/usr/etc/bash.bashrc"
@@ -21,7 +21,7 @@ cyan="\033[36m"
 load_animation=( '•....' '.•...' '..•..' '...•.' '....•' '...•.' '..•..' '.•...' '•....' )
 load_animation2=( ' ↑↓' ' ↓↑' )
 load_animation3=( ' ↑' ' ↓')
-load_animation4=(  ' >' ' >>' ' >>>' ' >>>>' ' >>>>>' ' >>>>' ' >>>' ' >>' ' >' '     <' '    <<' '   <<<' '  <<<<' ' <<<<<' '  <<<<' '   <<<' '    <<' '     <' )
+load_animation4=(  ' >' ' >>' ' >>>' ' >>>>' ' >>>>>' ' >>>>' ' >>>' ' >>' ' >' ' ' '     <' '    <<' '   <<<' '  <<<<' ' <<<<<' '  <<<<' '   <<<' '    <<' '     <' )
 
 trap interrupt_handler SIGINT
 interrupt_handler(){
@@ -111,7 +111,7 @@ with_animation "update_ssl_certificate" #this is a function,not a command
 #writing a valid value to /etc/machine-id
 printf "${red}+-+-Making /etc/machine-id in ubuntu${clear}\n">>$log_file
 printf "${green}Making /etc/machine-id in ubuntu${clear}\n"
-echo "10666fee-0108-3264-1000-beef10de1667">$root_fs/etc/machine-id
+proot-distro login ubuntu -- uuidgen>$root_fs/etc/machine-id
 
 #adding ubuntu login cmd to bash.bashrc
 printf "${red}+-+-Adding login commands to termux bashrc at ~/../usr/etc/bash.bashrc${clear}\n">>$log_file
