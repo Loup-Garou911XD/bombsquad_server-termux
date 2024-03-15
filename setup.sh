@@ -71,7 +71,7 @@ get_latest_server_build(){
 
 update_termux(){
     apt-get update &>>$log_file
-    apt-get upgrade -o Dpkg::Options::="--force-confnew" -y &>>$log_file
+    apt upgrade -o Dpkg::Options::="--force-confnew" -y &>>$log_file
 }
 
 
