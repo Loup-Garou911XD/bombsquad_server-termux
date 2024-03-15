@@ -76,7 +76,7 @@ update_termux(){
 
 
 update_ubuntu(){
-    proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -o Dpkg::Options::="--force-confnew" -y  &>>$log_file
+    proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y  &>>$log_file
 }
 
 #getting and printing art
