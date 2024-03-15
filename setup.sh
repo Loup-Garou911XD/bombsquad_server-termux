@@ -71,12 +71,12 @@ get_latest_server_build(){
 
 update_termux(){
     apt-get update &>>$log_file
-    yes|apt-get upgrade -y &>>$log_file
+    apt-get install -o Dpkg::Options::="--force-confnew" --force-yes -y &>>$log_file
 }
 
 
 update_ubuntu(){
-    proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y  &>>$log_file
+    proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -o Dpkg::Options::="--force-confnew" --force-yes -y  &>>$log_file
 }
 
 #getting and printing art
