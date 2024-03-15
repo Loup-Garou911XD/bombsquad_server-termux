@@ -77,6 +77,7 @@ update_termux(){
 
 
 update_ubuntu(){
+    export DEBIAN_FRONTEND=noninteractive
     proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y  &>>$log_file
 }
 
