@@ -49,10 +49,15 @@ with_animation(){
 }
 
 update_ssl_certificate(){
+    export DEBIAN_FRONTEND=noninteractive
     proot-distro login ubuntu -- apt-get install -y ca-certificates &>>$log_file
     proot-distro login ubuntu -- update-ca-certificates &>>$log_file
 }
 
+proot_install_python(){
+    export DEBIAN_FRONTEND=noninteractive
+    proot-distro login ubuntu -- apt-get install python3.11-dev -y &>>$log_file
+}
 
 setup_storage(){
     yes|termux-setup-storage &>>$log_file
@@ -144,7 +149,7 @@ read -r install_python_yn
 case $install_python_yn in
     y|Y|yes|Yes|YES) 
 	printf "${green}Installing python3.11${clear}\n" ; 
-	with_animation "\$(proot-distro login ubuntu -- apt-get install python3.11-dev -y &>>$log_file)" ;;
+	    with_animation "proot_install_python" ;
     * )
 	printf "${yellow}Skipping${clear}\n";
 esac
