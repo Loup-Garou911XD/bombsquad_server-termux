@@ -48,13 +48,17 @@ with_animation(){
     kill $pid &>>$log_file
 }
 
+run_in_proot(){
+    proot-distro login ubuntu -- bash -c "$1" &>>$log_file
+}
+
 update_ssl_certificate(){
-    proot-distro login ubuntu -- bash -c 'export DEBIAN_FRONTEND=noninteractive && apt-get install -y ca-certificates' &>>$log_file
-    proot-distro login ubuntu -- bash -c 'export DEBIAN_FRONTEND=noninteractive && update-ca-certificates' &>>$log_file
+    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get install -y ca-certificates'
+    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && update-ca-certificates'
 }
 
 proot_install_python(){
-    proot-distro login ubuntu -- bash -c 'export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y python3.11-dev' &>>$log_file
+    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y python3.11-dev' &>>$log_file
 }
 
 setup_storage(){
