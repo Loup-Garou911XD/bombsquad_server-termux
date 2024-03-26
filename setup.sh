@@ -149,7 +149,7 @@ read -r install_python_yn
 case $install_python_yn in
     y|Y|yes|Yes|YES) 
 	printf "${green}Installing python3.11${clear}\n" ; 
-	    with_animation "proot_install_python" ;
+	    with_animation "proot_install_python" ;;
     * )
 	printf "${yellow}Skipping${clear}\n";
 esac
