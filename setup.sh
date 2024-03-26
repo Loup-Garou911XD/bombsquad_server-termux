@@ -44,12 +44,12 @@ animate(){
 with_animation(){
     animate &
     pid=$!
-    eval $1
+    eval "$1" &>>$log_file
     kill $pid &>>$log_file
 }
 
 run_in_proot(){
-    proot-distro login ubuntu -- bash -c "$1" &>>$log_file
+    proot-distro login ubuntu -- bash -c "$1"
 }
 
 update_ssl_certificate(){
@@ -100,12 +100,12 @@ with_animation "update_termux"
 #installing proot-distro
 printf "${red}+-+-Installing proot-distro${clear}\n">>$log_file
 printf "${green}Installing proot-distro${clear}\n"
-with_animation "\$(apt-get install proot-distro -y &>>$log_file)"
+with_animation "\$(apt-get install proot-distro -y)"
 
 #installing proot-distro ubuntu
 printf "${red}+-+-Installing proot-distro Ubuntu${clear}\n">>$log_file
 printf "${green}Installing proot-distro Ubuntu${clear}\n"
-with_animation "\$(proot-distro install ubuntu &>>$log_file)"
+with_animation "\$(proot-distro install ubuntu)"
 
 #updating ubuntu
 printf "${red}+-+-Updating ubuntu packages${clear}\n">>$log_file
@@ -171,4 +171,5 @@ esac
 printf "${cyan}Finished!${clear}\n"
 printf "${cyan}Finished!${clear}\n">>$log_file
 proot-distro login ubuntu
+
 
