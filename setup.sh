@@ -49,12 +49,12 @@ with_animation(){
 }
 
 update_ssl_certificate(){
-    proot-distro login ubuntu -- export DEBIAN_FRONTEND=noninteractive; apt-get install -y ca-certificates &>>$log_file
-    proot-distro login ubuntu -- export DEBIAN_FRONTEND=noninteractive; update-ca-certificates &>>$log_file
+    proot-distro login ubuntu -- export DEBIAN_FRONTEND=noninteractive && apt-get install -y ca-certificates &>>$log_file
+    proot-distro login ubuntu -- export DEBIAN_FRONTEND=noninteractive && update-ca-certificates &>>$log_file
 }
 
 proot_install_python(){
-    proot-distro login ubuntu -- set DEBIAN_FRONTEND=noninteractive; apt-get install python3.11-dev -y &>>$log_file
+    proot-distro login ubuntu -- export DEBIAN_FRONTEND=noninteractive && apt-get install python3.11-dev -y &>>$log_file
 }
 
 setup_storage(){
