@@ -165,5 +165,6 @@ case $get_latest_server_yn in
 esac
 
 printf "${cyan}Finished!${clear}\n"
+printf "${cyan}Finished!${clear}\n">>$log_file
 proot-distro login ubuntu
 
