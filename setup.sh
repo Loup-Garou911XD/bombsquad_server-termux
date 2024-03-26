@@ -58,7 +58,7 @@ update_ssl_certificate(){
 }
 
 proot_install_python(){
-    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y python3.11-dev' &>>$log_file
+    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y python3.11-dev'
 }
 
 setup_storage(){
@@ -84,8 +84,7 @@ update_termux(){
 
 
 update_ubuntu(){
-    export DEBIAN_FRONTEND=noninteractive
-    proot-distro login ubuntu &>>$log_file -- apt-get update && apt-get upgrade -y  &>>$log_file
+    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get upgrade -y'
 }
 
 #getting and printing art
