@@ -55,8 +55,7 @@ update_ssl_certificate(){
 }
 
 proot_install_python(){
-    export DEBIAN_FRONTEND=noninteractive
-    proot-distro login ubuntu -- apt-get install python3.11-dev -y &>>$log_file
+    proot-distro login ubuntu -- export DEBIAN_FRONTEND=noninteractive apt-get install python3.11-dev -y &>>$log_file
 }
 
 setup_storage(){
