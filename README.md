@@ -1,6 +1,8 @@
 # bombsquad_server-termux
 This repository is to help you run a bombsquad server on termux
 
+If you find this helpful, consider giving the repository a [⭐](https://github.com/Loup-Garou911XD/bombsquad_server-termux/stargazers)
+
 ## Features
 + One command setup
 
