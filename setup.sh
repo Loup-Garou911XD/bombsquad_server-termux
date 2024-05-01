@@ -143,7 +143,7 @@ case $setup_storage_yn in
 	printf "${yellow}Skipping${clear}\n";
 esac
 
-#install python3.11?
+#install python3.12?
 printf "${red}+-+-Install python3.12?${clear}\n">>$log_file
 printf "${blue}Install python3.12${clear}(y/n):" 
 read -r install_python_yn
