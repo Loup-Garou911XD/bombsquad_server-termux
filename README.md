@@ -5,7 +5,8 @@ If you find this helpful, consider giving the repository a [⭐](https://github.
 
 ## Features
 + One command setup
-
++ Download latest bombsquad server automatically
++ Download latest python version supported by bombsquad
 ## Prerequisites
 + termux arm64/armv8
 + Stable internet connection 
