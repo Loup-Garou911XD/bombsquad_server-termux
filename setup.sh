@@ -58,7 +58,7 @@ update_ssl_certificate(){
 }
 
 proot_install_python(){
-    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y python3.11-dev'
+    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y python3.12-dev'
 }
 
 setup_storage(){
