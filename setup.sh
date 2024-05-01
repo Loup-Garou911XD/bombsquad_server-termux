@@ -144,12 +144,12 @@ case $setup_storage_yn in
 esac
 
 #install python3.11?
-printf "${red}+-+-Install python3.11?${clear}\n">>$log_file
-printf "${blue}Install python3.11${clear}(y/n):" 
+printf "${red}+-+-Install python3.12?${clear}\n">>$log_file
+printf "${blue}Install python3.12${clear}(y/n):" 
 read -r install_python_yn
 case $install_python_yn in
     y|Y|yes|Yes|YES) 
-	printf "${green}Installing python3.11${clear}\n" ; 
+	printf "${green}Installing python3.12${clear}\n" ; 
 	    with_animation "proot_install_python" ;;
     * )
 	printf "${yellow}Skipping${clear}\n";
