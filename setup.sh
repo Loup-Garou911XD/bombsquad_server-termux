@@ -70,7 +70,7 @@ setup_storage(){
 #downloads and extracts the latest bombsquad server build for arm64
 get_latest_server_build(){
     curl -so get_latest_link.py $raw_get_latest_link &&
-    proot-distro login ubuntu --termux-home -- python3.11 get_latest_link.py
+    proot-distro login ubuntu --termux-home -- python3.12 get_latest_link.py
     curl $(cat $download_link_file) -o $root_fs/root/bs_server.tar.gz &>>$log_file &&
     tar -xzf $root_fs/root/bs_server.tar.gz -C $root_fs/root/
 }
