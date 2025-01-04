@@ -75,6 +75,25 @@ get_latest_server_build(){
     tar -xzf $root_fs/root/bs_server.tar.gz -C $root_fs/root/
 }
 
+check_cpu_architecture(){
+    if uname -m | grep -q 'aarch64'
+    then
+        printf "${green}CPU check succeeded!${clear}\n"
+    else
+        printf "${red}+-+-Unsupported cpu architecture $(uname -m) ${clear}\n">>$log_file
+        printf "${red}Unsupported cpu architecture detected, do you still wish to continue(y/n):${clear}\n"
+        read -r continue_unsupported_architecture_yn
+        case $continue_unsupported_architecture_yn in
+            y|Y|yes|Yes|YES) 
+            printf "${green}continuing on unsupported architecture...${clear}\n"
+                ;;
+            * )
+            printf "${yellow}Exitting${clear}\n" ;
+            exit 0
+            ;;
+        esac
+    fi
+}
 
 update_termux(){
     apt update &>>$log_file
@@ -90,6 +109,11 @@ update_ubuntu(){
 #getting and printing art
 echo ""
 curl -s $raw_art_link
+
+#cpu architecture check
+printf "${red}+-+-Checking CPU architecture${clear}\n">>$log_file
+printf "${green}Checking CPU architecture${clear}\n"
+check_cpu_architecture
 
 #updating termux
 printf "${red}+-+-Updating Termux packages${clear}\n">>$log_file
