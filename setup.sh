@@ -58,6 +58,10 @@ update_ssl_certificate(){
     run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get install -y ca-certificates'
     run_in_proot 'export DEBIAN_FRONTEND=noninteractive && update-ca-certificates'
 }
+add_deadsnakes(){
+    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get install -y software-properties-common'
+    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && add-apt-repository ppa:deadsnakes/ppa'
+}
 
 proot_install_python(){
     run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y ${python_version_name}-dev'
@@ -86,7 +90,7 @@ check_cpu_architecture(){
         printf "${red}Unsupported cpu architecture detected, do you still wish to continue(y/n):${clear}\n"
         read -r continue_unsupported_architecture_yn
         case $continue_unsupported_architecture_yn in
-            y|Y|yes|Yes|YES) 
+            y|Y|yes|Yes|YES)
             printf "${green}continuing on unsupported architecture...${clear}\n"
                 ;;
             * )
@@ -142,6 +146,11 @@ printf "${red}+-+-Updating ubuntu CA certificates${clear}\n">>$log_file
 printf "${green}Updating ubuntu CA certificates${clear}\n"
 with_animation "update_ssl_certificate" #this is a function,not a command
 
+#add deadsnakes-ppa
+printf "${red}+-+-Adding Deadsnakes-ppa${clear}\n">>$log_file
+printf "${green}Adding Deadsnakes-ppa${clear}\n"
+with_animation "add_deadsnakes"
+
 #writing a valid value to /etc/machine-id
 printf "${red}+-+-Making /etc/machine-id in ubuntu${clear}\n">>$log_file
 printf "${green}Making /etc/machine-id in ubuntu${clear}\n"
@@ -171,11 +180,11 @@ esac
 
 #install python?
 printf "${red}+-+-Install ${python_version_name}?${clear}\n">>$log_file
-printf "${blue}Install ${python_version_name}${clear}(y/n):" 
+printf "${blue}Install ${python_version_name}${clear}(y/n):"
 read -r install_python_yn
 case $install_python_yn in
-    y|Y|yes|Yes|YES) 
-	printf "${green}Installing ${python_version_name}${clear}\n" ; 
+    y|Y|yes|Yes|YES)
+	printf "${green}Installing ${python_version_name}${clear}\n" ;
 	    with_animation "proot_install_python" ;;
     * )
 	printf "${yellow}Skipping${clear}\n";
@@ -183,10 +192,10 @@ esac
 
 #download latest server?
 printf "${red}+-+-Get latest bs version?${clear}\n">>$log_file
-printf "${blue}Get latest bombsquad server${clear}(y/n):" 
+printf "${blue}Get latest bombsquad server${clear}(y/n):"
 read -r get_latest_server_yn
 case $get_latest_server_yn in
-    y|Y|yes|Yes|YES) 
+    y|Y|yes|Yes|YES)
 	printf "${green}Downloading bombsquad server${clear}\n" ;
         with_animation "get_latest_server_build" ;;
     * )
