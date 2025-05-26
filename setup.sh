@@ -1,5 +1,7 @@
 #!/bin/bash
 
+python_version="3.13"
+python_version_name="python${python_version}"
 termux_home="/data/data/com.termux/files/home/"
 termux_bashrc="/data/data/com.termux/files/usr/etc/bash.bashrc"
 download_link_file=".latest_bombsquad_server_download_ln"
@@ -58,7 +60,7 @@ update_ssl_certificate(){
 }
 
 proot_install_python(){
-    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y python3.12-dev'
+    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y ${python_version_name}-dev'
 }
 
 setup_storage(){
@@ -70,7 +72,7 @@ setup_storage(){
 #downloads and extracts the latest bombsquad server build for arm64
 get_latest_server_build(){
     curl -so get_latest_link.py $raw_get_latest_link &&
-    proot-distro login ubuntu --termux-home -- python3.12 get_latest_link.py
+    proot-distro login ubuntu --termux-home -- ${python_version_name} get_latest_link.py
     curl $(cat $download_link_file) -o $root_fs/root/bs_server.tar.gz &>>$log_file &&
     tar -xzf $root_fs/root/bs_server.tar.gz -C $root_fs/root/
 }
@@ -167,13 +169,13 @@ case $setup_storage_yn in
 	printf "${yellow}Skipping${clear}\n";
 esac
 
-#install python3.12?
-printf "${red}+-+-Install python3.12?${clear}\n">>$log_file
-printf "${blue}Install python3.12${clear}(y/n):" 
+#install python?
+printf "${red}+-+-Install ${python_version_name}?${clear}\n">>$log_file
+printf "${blue}Install ${python_version_name}${clear}(y/n):" 
 read -r install_python_yn
 case $install_python_yn in
     y|Y|yes|Yes|YES) 
-	printf "${green}Installing python3.12${clear}\n" ; 
+	printf "${green}Installing ${python_version_name}${clear}\n" ; 
 	    with_animation "proot_install_python" ;;
     * )
 	printf "${yellow}Skipping${clear}\n";
