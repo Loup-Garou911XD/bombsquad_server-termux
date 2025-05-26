@@ -55,16 +55,16 @@ run_in_proot(){
 }
 
 update_ssl_certificate(){
-    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get install -y ca-certificates'
-    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && update-ca-certificates'
+    run_in_proot "export DEBIAN_FRONTEND=noninteractive && apt-get install -y ca-certificates"
+    run_in_proot "export DEBIAN_FRONTEND=noninteractive && update-ca-certificates"
 }
 add_deadsnakes(){
-    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get install -y software-properties-common'
-    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && add-apt-repository ppa:deadsnakes/ppa -y'
+    run_in_proot "export DEBIAN_FRONTEND=noninteractive && apt-get install -y software-properties-common"
+    run_in_proot "export DEBIAN_FRONTEND=noninteractive && add-apt-repository ppa:deadsnakes/ppa -y"
 }
 
 proot_install_python(){
-    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y ${python_version_name}-dev'
+    run_in_proot "export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get install -y ${python_version_name}-dev"
 }
 
 setup_storage(){
@@ -109,7 +109,7 @@ update_termux(){
 
 
 update_ubuntu(){
-    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get upgrade -y'
+    run_in_proot "export DEBIAN_FRONTEND=noninteractive && apt-get update && apt-get upgrade -y"
 }
 
 #getting and printing art
