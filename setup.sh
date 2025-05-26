@@ -60,7 +60,7 @@ update_ssl_certificate(){
 }
 add_deadsnakes(){
     run_in_proot 'export DEBIAN_FRONTEND=noninteractive && apt-get install -y software-properties-common'
-    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && add-apt-repository ppa:deadsnakes/ppa'
+    run_in_proot 'export DEBIAN_FRONTEND=noninteractive && add-apt-repository ppa:deadsnakes/ppa -y'
 }
 
 proot_install_python(){
