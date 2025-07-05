@@ -10,7 +10,7 @@ If you find this helpful, consider giving the repository a [⭐](https://github.
 ## Prerequisites
 + termux arm64/armv8
 + Stable internet connection 
-
++ Basic linux commands to manage server
 
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/Loup-Garou911XD/bombsquad_server-termux/main/setup.sh)
